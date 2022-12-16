@@ -13,5 +13,7 @@ typedef struct Img {
     SDL_Texture *texture;
 } Img;
 
+enum block{HERBE1, HERBE2, FLEUR1, FLEUR2, SOL1, SOL2, SOL3};
+
 
 #endif

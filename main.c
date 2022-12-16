@@ -8,11 +8,13 @@
 #include <SDL_image.h>
 #include "main.h"
 #include "move_player.h"
+#include "map.h"
 
 Jeu jeu;
 Img img;
 
 Img *p_img = &img;
+Jeu *p_jeu = &jeu;
 
 int main(int argc, char **argv) {
 
@@ -44,17 +46,21 @@ int main(int argc, char **argv) {
      }
 
     //init(jeu);
+    
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////
  
         // affiche le sprite du personnage
         p_img->surface = IMG_Load("perso/tileFront1.png");  // creation de la surface a partir de l'image
-        display_perso(jeu, &img, &perso); 
+        display_perso(jeu, &img, &perso);
+        int d = 0;
+        int f = 0;
+        display_map(p_jeu, d, f);
+        
 
     while(program_launched) {
 
-        SDL_Event event;
-        
+        SDL_Event event;        
         while(SDL_PollEvent(&event)) {
 
             switch(event.type) {
@@ -64,14 +70,15 @@ int main(int argc, char **argv) {
                 break;
 
                 case SDL_KEYDOWN: 
-                    printf("%d %d %d %d", p_perso->x, p_perso->y, p_perso->w, p_perso->h);
+                    SDL_DestroyTexture(p_img->texture);
+                    SDL_RenderClear(jeu.gRenderer);
+                    display_map(p_jeu, d, f);
                     switch(event.key.keysym.sym) {  
-
                         case SDLK_LEFT: 
                             countCase++;
                             p_perso->x -= SPEED;
                             if(p_perso->x <= 0) {
-                               p_perso->x += SPEED;
+                               p_perso->x += (SCREEN_W - p_perso->w);
                             }
                             load_anim_left(c, jeu, &img, &perso);
                             //orientation = 1;
@@ -83,7 +90,7 @@ int main(int argc, char **argv) {
                             countCase++; 
                             p_perso->x += SPEED;
                             if(p_perso->x >= (SCREEN_W - p_perso->w)) {
-                                p_perso->x -= SPEED;
+                                p_perso->x -= (SCREEN_W - p_perso->w);
                             }
                             load_anim_right(c, jeu, &img, &perso);
                             //orientation = 2;
@@ -93,24 +100,24 @@ int main(int argc, char **argv) {
 
                         case SDLK_UP: 
                             countCase++; 
-                            perso.y -= SPEED;
-                            if(perso.y <= 0) {
-                                perso.y += SPEED;
+                            p_perso->y -= SPEED;
+                            if(p_perso->y <= 0) {
+                                p_perso->y += (SCREEN_W - p_perso->w);
                             }
                             load_anim_back(c, jeu, &img, &perso);
-                            orientation = 3;
+                            //orientation = 3;
                             break;
 
                         /////////////////////////////////////////////////////////////////////////////////////////////////
 
                         case SDLK_DOWN:
                             countCase++; 
-                            perso.y += SPEED;
-                            if(perso.y >= (SCREEN_H - perso.h)) {
-                                perso.y -= SPEED;
+                            p_perso->y += SPEED;
+                            if(p_perso->y >= (SCREEN_H - p_perso->h)) {
+                                p_perso->y -= (SCREEN_W - p_perso->w);
                             }
                             load_anim_forward(c, jeu, &img, &perso);
-                            orientation = 4;
+                            //orientation = 4;
                         break;
 
 
