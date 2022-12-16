@@ -1,5 +1,5 @@
-// gcc -c main.c $(sdl2-config --cflags --libs) -lSDL2_image
-// gcc -o main main.o $(sdl2-config --cflags --libs) -lSDL2_image
+// gcc -c main.c map.c move_player.c  $(sdl2-config --cflags --libs) -lSDL2_image
+// gcc -o main main.o map.o move_player.o $(sdl2-config --cflags --libs) -lSDL2_image
 //https://convert-my-image.com/ImageConverter_Fr
 
 #include <stdlib.h>
@@ -9,6 +9,7 @@
 #include "main.h"
 #include "move_player.h"
 #include "map.h"
+#include "init.h"
 
 Jeu jeu;
 Img img;
@@ -25,6 +26,10 @@ int main(int argc, char **argv) {
     int countCase = 0; // compte les appuis sur une touche
     int *c = &countCase;
     int orientation = 0;
+    int nbMapLoad = 1; 
+
+     int xmap = 0;
+     int ymap = 0;
 
     ///////////////////////////////////////////// INIT //////////////////////////////////////////////////
 
@@ -55,7 +60,7 @@ int main(int argc, char **argv) {
         display_perso(jeu, &img, &perso);
         int d = 0;
         int f = 0;
-        display_map(p_jeu, d, f);
+        display_map(p_jeu, d, f, xmap, ymap);
         
 
     while(program_launched) {
@@ -72,15 +77,20 @@ int main(int argc, char **argv) {
                 case SDL_KEYDOWN: 
                     SDL_DestroyTexture(p_img->texture);
                     SDL_RenderClear(jeu.gRenderer);
-                    display_map(p_jeu, d, f);
+                    display_map(p_jeu, d, f, xmap, ymap);
+                    nbMapLoad++; 
+                    printf("map numero : %d %d\n", xmap, ymap);
+
                     switch(event.key.keysym.sym) {  
                         case SDLK_LEFT: 
                             countCase++;
                             p_perso->x -= SPEED;
                             if(p_perso->x <= 0) {
                                p_perso->x += (SCREEN_W - p_perso->w);
+                               xmap--; 
                             }
                             load_anim_left(c, jeu, &img, &perso);
+                            
                             //orientation = 1;
                         break;
                                                 
@@ -91,6 +101,7 @@ int main(int argc, char **argv) {
                             p_perso->x += SPEED;
                             if(p_perso->x >= (SCREEN_W - p_perso->w)) {
                                 p_perso->x -= (SCREEN_W - p_perso->w);
+                                xmap++; 
                             }
                             load_anim_right(c, jeu, &img, &perso);
                             //orientation = 2;
@@ -103,8 +114,11 @@ int main(int argc, char **argv) {
                             p_perso->y -= SPEED;
                             if(p_perso->y <= 0) {
                                 p_perso->y += (SCREEN_W - p_perso->w);
+                                ymap--;
+                                if(ymap <= 0) ymap = 0; 
                             }
                             load_anim_back(c, jeu, &img, &perso);
+                            
                             //orientation = 3;
                             break;
 
@@ -115,8 +129,10 @@ int main(int argc, char **argv) {
                             p_perso->y += SPEED;
                             if(p_perso->y >= (SCREEN_H - p_perso->h)) {
                                 p_perso->y -= (SCREEN_W - p_perso->w);
+                                 ymap++;
                             }
                             load_anim_forward(c, jeu, &img, &perso);
+                           
                             //orientation = 4;
                         break;
 
@@ -137,8 +153,22 @@ int main(int argc, char **argv) {
     unsigned ticks = 0; 
     ticks = SDL_GetTicks();
     printf("%dms écoulées\n", ticks);
+    printf("nb de chargement de map : %d\n", nbMapLoad);
     fermeture(jeu); 
     extern int atexit(void (*SDL_QUIT) (void));
 
     return EXIT_SUCCESS;
+}
+
+void fermeture(struct Jeu jeu) {
+
+    if(jeu.gRenderer != NULL) {
+        SDL_DestroyRenderer(jeu.gRenderer);
+    }
+
+    if(jeu.gWindow != NULL) {
+        SDL_DestroyWindow(jeu.gWindow);
+    }
+
+    SDL_Quit();
 }
