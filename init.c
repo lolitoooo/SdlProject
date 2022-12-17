@@ -37,15 +37,3 @@
     
 }*/
 
-void fermeture(struct Jeu jeu) {
-
-    if(jeu.gRenderer != NULL) {
-        SDL_DestroyRenderer(jeu.gRenderer);
-    }
-
-    if(jeu.gWindow != NULL) {
-        SDL_DestroyWindow(jeu.gWindow);
-    }
-
-    SDL_Quit();
-}
