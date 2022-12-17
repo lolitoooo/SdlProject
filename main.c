@@ -18,6 +18,11 @@ Jeu *p_jeu = &jeu;
 
 int main(int argc, char **argv) {
 
+    int xMap = 0;
+    int yMap = 0;
+    int i =0;
+    int j = 0;
+
     SDL_bool program_launched = SDL_TRUE;
     SDL_Rect perso = {0, 0, 64, 64}; // rectangle de destination du perso
     SDL_Rect *p_perso = &perso;
@@ -55,7 +60,7 @@ int main(int argc, char **argv) {
         display_perso(jeu, &img, &perso);
         int d = 0;
         int f = 0;
-        display_map(p_jeu, d, f);
+        display_map(p_jeu, xMap, yMap);
         
 
     while(program_launched) {
@@ -72,13 +77,17 @@ int main(int argc, char **argv) {
                 case SDL_KEYDOWN: 
                     SDL_DestroyTexture(p_img->texture);
                     SDL_RenderClear(jeu.gRenderer);
-                    display_map(p_jeu, d, f);
+                    display_map(p_jeu, xMap, yMap);
                     switch(event.key.keysym.sym) {  
                         case SDLK_LEFT: 
+                            printf("xMap = %d | yMap = %d\n", xMap, yMap);
                             countCase++;
                             p_perso->x -= SPEED;
                             if(p_perso->x <= 0) {
                                p_perso->x += (SCREEN_W - p_perso->w);
+                               xMap--;
+                               printf("xMap = %d | yMap = %d\n", xMap, yMap);
+                               display_map(p_jeu, xMap, yMap);
                             }
                             load_anim_left(c, jeu, &img, &perso);
                             //orientation = 1;
@@ -87,10 +96,14 @@ int main(int argc, char **argv) {
                         /////////////////////////////////////////////////////////////////////////////////////////////////
 
                         case SDLK_RIGHT: 
+                            printf("xMap = %d | yMap = %d\n", xMap, yMap);
                             countCase++; 
                             p_perso->x += SPEED;
                             if(p_perso->x >= (SCREEN_W - p_perso->w)) {
                                 p_perso->x -= (SCREEN_W - p_perso->w);
+                                xMap++;
+                                printf("xMap = %d | yMap = %d\n", xMap, yMap);
+                                display_map(p_jeu, xMap, yMap);
                             }
                             load_anim_right(c, jeu, &img, &perso);
                             //orientation = 2;
@@ -99,10 +112,14 @@ int main(int argc, char **argv) {
                         /////////////////////////////////////////////////////////////////////////////////////////////////
 
                         case SDLK_UP: 
+                            printf("xMap = %d | yMap = %d\n", xMap, yMap);
                             countCase++; 
                             p_perso->y -= SPEED;
                             if(p_perso->y <= 0) {
                                 p_perso->y += (SCREEN_W - p_perso->w);
+                                yMap--;
+                                printf("xMap = %d | yMap = %d\n", xMap, yMap);
+                                display_map(p_jeu, xMap, yMap);
                             }
                             load_anim_back(c, jeu, &img, &perso);
                             //orientation = 3;
@@ -111,10 +128,14 @@ int main(int argc, char **argv) {
                         /////////////////////////////////////////////////////////////////////////////////////////////////
 
                         case SDLK_DOWN:
+                            printf("xMap = %d | yMap = %d\n", xMap, yMap);
                             countCase++; 
                             p_perso->y += SPEED;
                             if(p_perso->y >= (SCREEN_H - p_perso->h)) {
                                 p_perso->y -= (SCREEN_W - p_perso->w);
+                                yMap++;
+                                printf("xMap = %d | yMap = %d\n", xMap, yMap);
+                                display_map(p_jeu, xMap, yMap);
                             }
                             load_anim_forward(c, jeu, &img, &perso);
                             //orientation = 4;

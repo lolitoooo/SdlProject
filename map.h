@@ -2,6 +2,6 @@
 #define MAP_H
 #include "struct.h"
 
-void display_map(Jeu *p_jeu, int d, int f);
+void display_map(Jeu *p_jeu, int xMap, int yMap);
 
 #endif 
