@@ -2,6 +2,8 @@
 // gcc -o main main.o $(sdl2-config --cflags --libs) -lSDL2_image
 //https://convert-my-image.com/ImageConverter_Fr
 
+
+// test push 
 #include <stdlib.h>
 #include <stdio.h>
 #include <SDL.h>
