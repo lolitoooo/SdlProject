@@ -8,6 +8,7 @@ typedef struct Jeu {
 
 } Jeu; 
 
+
 typedef struct Img {
     SDL_Surface *surface;
     SDL_Texture *texture;
