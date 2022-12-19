@@ -608,9 +608,94 @@ void display_map(Jeu *p_jeu,  int xmap,  int ymap) {
             position_elem.y = i*TAILLE_BLOCK; //  l'ordonnÃ©e de l'element + 34
             
             if(xmap == 0 && ymap == 0) {
+                
 
             switch(carte[i][j]) {
-                
+                case 0: // herbe1
+                map[i][j].texture = grass1.texture;
+                SDL_RenderCopy(p_jeu->gRenderer, (map[i][j]).texture, NULL, &position_elem);
+                break;
+
+                case 1: // herbe2
+                map[i][j].texture = grass2.texture;
+                SDL_RenderCopy(p_jeu->gRenderer, (map[i][j]).texture, NULL, &position_elem);
+                break;
+
+                    case 2: // fleur1
+                map[i][j].texture = flower1.texture;
+                SDL_RenderCopy(p_jeu->gRenderer, (map[i][j]).texture, NULL, &position_elem);
+                break;
+
+                case 3: // fleur2
+                map[i][j].texture = flower2.texture;
+                SDL_RenderCopy(p_jeu->gRenderer, (map[i][j]).texture, NULL, &position_elem);
+                break;
+
+                case 4: // sol1
+                map[i][j].texture = ground1.texture;
+                SDL_RenderCopy(p_jeu->gRenderer, (map[i][j]).texture, NULL, &position_elem);
+                break;
+
+                case 5: // sol2
+                map[i][j].texture = ground2.texture;
+                SDL_RenderCopy(p_jeu->gRenderer, (map[i][j]).texture, NULL, &position_elem);
+                break;
+
+                case 6: // sol3
+                map[i][j].texture = ground3.texture;
+                SDL_RenderCopy(p_jeu->gRenderer, (map[i][j]).texture, NULL, &position_elem);
+                break;
+
+                default:
+                break;
+                }
+
+            } else if(xmap == 1 && ymap == 0) {
+
+                switch(carte2[i][j]) {
+                case 0: // herbe1
+                map[i][j].texture = grass1.texture;
+                SDL_RenderCopy(p_jeu->gRenderer, (map[i][j]).texture, NULL, &position_elem);
+                break;
+
+                case 1: // herbe2
+                map[i][j].texture = grass2.texture;
+                SDL_RenderCopy(p_jeu->gRenderer, (map[i][j]).texture, NULL, &position_elem);
+                break;
+
+                    case 2: // fleur1
+                map[i][j].texture = flower1.texture;
+                SDL_RenderCopy(p_jeu->gRenderer, (map[i][j]).texture, NULL, &position_elem);
+                break;
+
+                case 3: // fleur2
+                map[i][j].texture = flower2.texture;
+                SDL_RenderCopy(p_jeu->gRenderer, (map[i][j]).texture, NULL, &position_elem);
+                break;
+
+                case 4: // sol1
+                map[i][j].texture = ground1.texture;
+                SDL_RenderCopy(p_jeu->gRenderer, (map[i][j]).texture, NULL, &position_elem);
+                break;
+
+                case 5: // sol2
+                map[i][j].texture = ground2.texture;
+                SDL_RenderCopy(p_jeu->gRenderer, (map[i][j]).texture, NULL, &position_elem);
+                break;
+
+                case 6: // sol3
+                map[i][j].texture = ground3.texture;
+                SDL_RenderCopy(p_jeu->gRenderer, (map[i][j]).texture, NULL, &position_elem);
+                break;
+
+                default:
+                break;
+                }
+            }
+
+            else if(xmap == 0 && ymap == 1) {
+
+                switch(carte2[i][j]) {
                 case 0: // herbe1
                 map[i][j].texture = grass1.texture;
                 SDL_RenderCopy(p_jeu->gRenderer, (map[i][j]).texture, NULL, &position_elem);
@@ -757,49 +842,44 @@ void display_map(Jeu *p_jeu,  int xmap,  int ymap) {
                 }
             }
 
+            
+
             else if(xmap == 1 && ymap == 1) {
 
                 switch(carte[i][j]) {
                 case 0: // herbe1
                 map[i][j].texture = grass1.texture;
                 SDL_RenderCopy(p_jeu->gRenderer, (map[i][j]).texture, NULL, &position_elem);
-                //SDL_RenderPresent(p_jeu->gRenderer);
                 break;
 
                 case 1: // herbe2
                 map[i][j].texture = grass2.texture;
                 SDL_RenderCopy(p_jeu->gRenderer, (map[i][j]).texture, NULL, &position_elem);
-                //SDL_RenderPresent(p_jeu->gRenderer);
                 break;
 
                     case 2: // fleur1
                 map[i][j].texture = flower1.texture;
                 SDL_RenderCopy(p_jeu->gRenderer, (map[i][j]).texture, NULL, &position_elem);
-                //SDL_RenderPresent(p_jeu->gRenderer);
                 break;
 
                 case 3: // fleur2
                 map[i][j].texture = flower2.texture;
                 SDL_RenderCopy(p_jeu->gRenderer, (map[i][j]).texture, NULL, &position_elem);
-                //SDL_RenderPresent(p_jeu->gRenderer);
                 break;
 
                 case 4: // sol1
                 map[i][j].texture = ground1.texture;
                 SDL_RenderCopy(p_jeu->gRenderer, (map[i][j]).texture, NULL, &position_elem);
-                //SDL_RenderPresent(p_jeu->gRenderer);
                 break;
 
                 case 5: // sol2
                 map[i][j].texture = ground2.texture;
                 SDL_RenderCopy(p_jeu->gRenderer, (map[i][j]).texture, NULL, &position_elem);
-                //SDL_RenderPresent(p_jeu->gRenderer);
                 break;
 
                 case 6: // sol3
                 map[i][j].texture = ground3.texture;
                 SDL_RenderCopy(p_jeu->gRenderer, (map[i][j]).texture, NULL, &position_elem);
-                //SDL_RenderPresent(p_jeu->gRenderer);
                 break;
 
                 default:
@@ -814,43 +894,36 @@ void display_map(Jeu *p_jeu,  int xmap,  int ymap) {
                 case 0: // herbe1
                 map[i][j].texture = grass1.texture;
                 SDL_RenderCopy(p_jeu->gRenderer, (map[i][j]).texture, NULL, &position_elem);
-                //SDL_RenderPresent(p_jeu->gRenderer);
                 break;
 
                 case 1: // herbe2
                 map[i][j].texture = grass2.texture;
                 SDL_RenderCopy(p_jeu->gRenderer, (map[i][j]).texture, NULL, &position_elem);
-                //SDL_RenderPresent(p_jeu->gRenderer);
                 break;
 
                     case 2: // fleur1
                 map[i][j].texture = flower1.texture;
                 SDL_RenderCopy(p_jeu->gRenderer, (map[i][j]).texture, NULL, &position_elem);
-                //SDL_RenderPresent(p_jeu->gRenderer);
                 break;
 
                 case 3: // fleur2
                 map[i][j].texture = flower2.texture;
                 SDL_RenderCopy(p_jeu->gRenderer, (map[i][j]).texture, NULL, &position_elem);
-                //SDL_RenderPresent(p_jeu->gRenderer);
                 break;
 
                 case 4: // sol1
                 map[i][j].texture = ground1.texture;
                 SDL_RenderCopy(p_jeu->gRenderer, (map[i][j]).texture, NULL, &position_elem);
-                //SDL_RenderPresent(p_jeu->gRenderer);
                 break;
 
                 case 5: // sol2
                 map[i][j].texture = ground2.texture;
                 SDL_RenderCopy(p_jeu->gRenderer, (map[i][j]).texture, NULL, &position_elem);
-                //SDL_RenderPresent(p_jeu->gRenderer);
                 break;
 
                 case 6: // sol3
                 map[i][j].texture = ground3.texture;
                 SDL_RenderCopy(p_jeu->gRenderer, (map[i][j]).texture, NULL, &position_elem);
-                //SDL_RenderPresent(p_jeu->gRenderer);
                 break;
 
                 default:

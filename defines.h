@@ -5,6 +5,6 @@
 #define SCREEN_W 576
 #define SPEED 12
 #define FPS 30
-#define TAILLE_BLOCK 48
+
 
 #endif
