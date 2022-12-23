@@ -1,0 +1,48 @@
+/*    if(keyUp == SDL_TRUE) {
+                                        p_perso->x -= SPEED/2;
+                                        p_perso->y -= SPEED/2; 
+                                    }  
+                                    else if(keyForward == SDL_TRUE) {
+                                         p_perso->x -= SPEED/2;
+                                         p_perso->y += SPEED/2; 
+                                    } 
+
+                                    else */
+                                
+
+
+                                  /*  if(keyUp == SDL_TRUE) {
+                                        p_perso->x += SPEED/2;
+                                         p_perso->y -= SPEED/2; 
+                                    }  
+                                    else if(keyForward == SDL_TRUE) {
+                                        p_perso->x += SPEED/2;
+                                         p_perso->y += SPEED/2; 
+                                    }   
+                                    
+                                    else */
+                                
+
+                                   /* if(keyLeft == SDL_TRUE) {
+                                    p_perso->y -= SPEED/2;
+                                         p_perso->x -= SPEED/2; 
+                                    }  
+                                    else if(keyRight == SDL_TRUE) {
+                                        p_perso->y -= SPEED/2;
+                                         p_perso->x += SPEED/2; 
+                                    } 
+
+                                    else */
+                                    
+
+                                /* if(keyLeft == SDL_TRUE) {
+                                    p_perso->y += SPEED/2;
+                                         p_perso->x -= SPEED/2; 
+                                    }  
+                                    else if(keyRight == SDL_TRUE) {
+                                        p_perso->y += SPEED/2;
+                                         p_perso->x += SPEED/2; 
+                                    } 
+
+                                    else */ 
+                                    STANDBY.TXT

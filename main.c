@@ -11,6 +11,8 @@
 #include "map.h"
 #include "init.h"
 
+int recup_carte(int x, int y);
+
 Jeu jeu;
 Img img;
 
@@ -18,24 +20,10 @@ Img *p_img = &img;
 Jeu *p_jeu = &jeu;
 
 int main(int argc, char **argv) {
-
-     int map1_collision[12][12] = {
-                                {1, 1, 1, 1, 1, 1, 1, 1, 1 ,1 ,1 ,1},
-                                {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-                                {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-                                {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-                                {1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 1},
-                                {1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 1},
-                                {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-                                {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-                                {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-                                {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-                                {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-                                {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
-                                };
+    
 
     SDL_bool program_launched = SDL_TRUE;
-    SDL_Rect perso = {96, 96, 64, 64}; // rectangle de destination du perso
+    SDL_Rect perso = {24, 168, 64, 64}; // rectangle de destination du perso
     SDL_Rect *p_perso = &perso;
 
     int countCase = 0; // compte les appuis sur une touche
@@ -46,6 +34,7 @@ int main(int argc, char **argv) {
 
      int xmap = 0;
      int ymap = 0;
+     int next_element_carte = 0; 
 
      ///// les touches du clavier /////
 
@@ -79,11 +68,13 @@ int main(int argc, char **argv) {
  
         // affiche le sprite du personnage
         p_img->surface = IMG_Load("perso/tileFront1.png");  // creation de la surface a partir de l'image
-        display_perso(p_jeu, &img, &perso);
+        
         display_map(p_jeu, xmap, ymap);    
+        display_perso(p_jeu, &img, &perso);
 
 
     while(program_launched) {
+
 
         tick_start = SDL_GetTicks();
         SDL_Event event;   
@@ -95,7 +86,6 @@ int main(int argc, char **argv) {
                 case SDL_QUIT: 
                     program_launched = SDL_FALSE; 
                 break;
-
 
 
                 case SDL_KEYUP:
@@ -120,33 +110,15 @@ int main(int argc, char **argv) {
                                 keyLeft = SDL_TRUE; 
 
                                     countCase++;
-                                
-                                   /* if(keyUp == SDL_TRUE) {
-                                        p_perso->x -= SPEED/2;
-                                        p_perso->y -= SPEED/2; 
-                                    }  
-                                    else if(keyForward == SDL_TRUE) {
-                                         p_perso->x -= SPEED/2;
-                                         p_perso->y += SPEED/2; 
-                                    } 
-
-                                    else */
-
-                              
-                                    if(map1_collision[p_perso->x/(SPEED*4) - 1][p_perso->y/(SPEED*4)] == 1) {
-                                        p_perso->x += SPEED; 
-                                    } 
-                                              p_perso->x -= SPEED;
-
+                               
+                                     p_perso->x -= SPEED;
                                     
-
-                                    printf("p_perso[%d][%d]\n", ((p_perso->x/SPEED) / 4), ((p_perso->y/SPEED) / 4));
-
-
+                        
+                                    printf("p_perso[%d][%d]\n",  p_perso->x + 12, p_perso->y - 12);
 
 
                                     if(p_perso->x <= 0 && xmap != 0) {
-                                    p_perso->x += (SCREEN_W);
+                                    p_perso->x += SCREEN_W - 60;
                                     xmap--; 
                                     nbMapLoad++; 
                                     printf("map numero : %d %d\n", xmap, ymap);
@@ -169,33 +141,21 @@ int main(int argc, char **argv) {
 
                                     countCase++; 
 
-                                    /*if(keyUp == SDL_TRUE) {
-                                        p_perso->x += SPEED/2;
-                                         p_perso->y -= SPEED/2; 
-                                    }  
-                                    else if(keyForward == SDL_TRUE) {
-                                        p_perso->x += SPEED/2;
-                                         p_perso->y += SPEED/2; 
-                                    }  
+                                     p_perso->x += SPEED;
 
-                                    else */ 
 
-                               
-
-                                    if(map1_collision[p_perso->x/(SPEED*4) + 1][p_perso->y/(SPEED*4)] == 1) {
-                                        p_perso->x -= SPEED; 
+                                    if(xmap == 0 && ymap == 0 && ((p_perso->x) + SPEED == 48)) {
+                                        if(p_perso->y >= 216 && p_perso->y <= 384) p_perso->x -= SPEED;
                                     }
-
-                                         p_perso->x += SPEED;
-                                         
-                                    printf("p_perso[%d][%d]\n", ((p_perso->x/SPEED) / 4), (p_perso->y/SPEED) / 4);
-
-
-
-
+                                    if(xmap == 0 && ymap == 0 && ((p_perso->x) + SPEED == 96)) {
+                                        if(p_perso->y == 144) p_perso->x -= SPEED;
+                                    }
+                                    
+                                                 
+                                    printf("p_perso[%d][%d]\n",  p_perso->x + 12, p_perso->y - 12);
 
                                     if(p_perso->x >= (SCREEN_W - p_perso->w)) {
-                                        p_perso->x -= (SCREEN_W - p_perso->w);
+                                        p_perso->x -= SCREEN_W - 60;
                                         xmap++; 
                                         nbMapLoad++; 
                                         printf("map numero : %d %d\n", xmap, ymap);
@@ -211,43 +171,29 @@ int main(int argc, char **argv) {
 
                                 keyUp = SDL_TRUE; 
 
-                               /* if(keyLeft == SDL_TRUE) {
-                                    p_perso->y -= SPEED/2;
-                                         p_perso->x -= SPEED/2; 
-                                    }  
-                                    else if(keyRight == SDL_TRUE) {
-                                        p_perso->y -= SPEED/2;
-                                         p_perso->x += SPEED/2; 
-                                    } 
+                                     p_perso->y -= SPEED;
 
-                                    else */ 
+                                    if(xmap == 0 && ymap == 0 && ((p_perso->y) - SPEED) == 384) {
+                                        if(p_perso->x >= 36 && p_perso->x <= 750) p_perso->y += SPEED;
+                                    }
 
-
-                                 
-
-
-                                    if(map1_collision[p_perso->x/(SPEED*4)][p_perso->y/(SPEED*4) - 1] == 1) {
-                                        p_perso->y += SPEED; 
-                                    } 
-
-                                    printf("p_perso[%d][%d]\n", (p_perso->x/SPEED) / 4, (p_perso->y/SPEED) / 4);
-
-                                        
-                                    p_perso->y -= SPEED;
-
-
+                                     if(xmap == 0 && ymap == 0 && ((p_perso->y) - SPEED == 144)) {
+                                        if(p_perso->x >= 108 && p_perso->x <= 252) p_perso->y += SPEED;
+                                    }
+                                   
+                                    printf("p_perso[%d][%d]\n",   p_perso->x + 12, p_perso->y - 12);
 
                                     countCase++; 
                                     
                                     if(p_perso->y <= 0 && ymap != 0) {
-                                        p_perso->y += (SCREEN_W - p_perso->h);
+                                        p_perso->y += SCREEN_H - 60;
                                         ymap--;
                                         if(ymap <= 0) ymap = 0; 
                                         nbMapLoad++; 
                                         printf("map numero : %d %d\n", xmap, ymap);
                                     } else if(p_perso->y <= 0 && ymap == 0) {
                                         p_perso->y += SPEED;
-                                    }
+                                    } 
                                     load_anim_back(c, p_jeu, &img, &perso);
                                     
                                 break;
@@ -259,36 +205,18 @@ int main(int argc, char **argv) {
 
                                 keyForward = SDL_TRUE;
 
-                               /*  if(keyLeft == SDL_TRUE) {
-                                    p_perso->y += SPEED/2;
-                                         p_perso->x -= SPEED/2; 
-                                    }  
-                                    else if(keyRight == SDL_TRUE) {
-                                        p_perso->y += SPEED/2;
-                                         p_perso->x += SPEED/2; 
-                                    } 
-
-                                    else*/ 
-
-                                        
-
-                                    if(map1_collision[p_perso->x/(SPEED*4)][p_perso->y/(SPEED*4) + 1] == 1) {
-                                        p_perso->y -= SPEED; 
-                                    } 
-
                                     p_perso->y += SPEED;
 
-                                    printf("p_perso[%d][%d]\n", (p_perso->x/SPEED) / 4, (p_perso->y/SPEED) / 4);
-
-
-                                  
-
-
+                                    printf("p_perso[%d][%d]\n",  p_perso->x + 12, p_perso->y - 12);
 
                                     countCase++; 
+
+                                    if(xmap == 0 && ymap == 0 && ((p_perso->y) + SPEED) == 204) {
+                                        if(p_perso->x >= 156 && p_perso->x <= 252) p_perso->y -= SPEED;
+                                    }
                                     
                                     if(p_perso->y >= (SCREEN_H - p_perso->h)) {
-                                        p_perso->y -= (SCREEN_W - p_perso->w);
+                                        p_perso->y -= SCREEN_H - 60;
                                         ymap++;
                                         nbMapLoad++; 
                                         printf("map numero : %d %d\n", xmap, ymap);
@@ -321,7 +249,6 @@ int main(int argc, char **argv) {
     printf("%dms écoulées\n", ticks);
     printf("nb de chargement de map : %d\n", nbMapLoad);
     fermeture(jeu); 
-    extern int atexit(void (*SDL_QUIT) (void));
 
     return EXIT_SUCCESS;
 }
