@@ -17,6 +17,8 @@ void display_map(Jeu *p_jeu,  int xmap,  int ymap) {
 
     ////////////// textures d'herbe ///////////////////
 
+    if(xmap == 0 && ymap == 0) {
+
     map1.surface = IMG_Load("map/map11.png");
     map1.texture = SDL_CreateTextureFromSurface(p_jeu->gRenderer, map1.surface);
 
@@ -24,8 +26,23 @@ void display_map(Jeu *p_jeu,  int xmap,  int ymap) {
         printf("erreur de creation de la texture : %s\n", SDL_GetError());
         exit(1); 
     }
-
-    /////////////////////////////////////////////////////
     SDL_RenderCopy(p_jeu->gRenderer, map1.texture, NULL, &rect_map);
+
+    }
+
+    if(xmap == 1 && ymap == 0) {
+
+    map2.surface = IMG_Load("map/map2.png");
+    map2.texture = SDL_CreateTextureFromSurface(p_jeu->gRenderer, map2.surface);
+
+    if(map2.texture == NULL) {
+        printf("erreur de creation de la texture : %s\n", SDL_GetError());
+        exit(1); 
+    }
+    SDL_RenderCopy(p_jeu->gRenderer, map2.texture, NULL, &rect_map);
+
+    }
+
+    
 
     }

@@ -10,6 +10,7 @@
 #include "move_player.h"
 #include "map.h"
 #include "init.h"
+#include "collisions.h"
 
 int recup_carte(int x, int y);
 
@@ -23,7 +24,7 @@ int main(int argc, char **argv) {
     
 
     SDL_bool program_launched = SDL_TRUE;
-    SDL_Rect perso = {24, 168, 64, 64}; // rectangle de destination du perso
+    SDL_Rect perso = {24, 120, 64, 64}; // rectangle de destination du perso
     SDL_Rect *p_perso = &perso;
 
     int countCase = 0; // compte les appuis sur une touche
@@ -95,11 +96,37 @@ int main(int argc, char **argv) {
                   if(keyForward == SDL_TRUE) keyForward = SDL_FALSE;
                    if(keyUp == SDL_TRUE) keyUp = SDL_FALSE; 
 
+                 /*  switch(orientation) {
+
+                    case 1:
+                     img.surface = IMG_Load("perso/tileLeft1.png");
+                        display_perso(p_jeu, &img, p_perso);
+                        break;
+
+                         case 2:
+                     img.surface = IMG_Load("perso/tileRight1.png");
+                        display_perso(p_jeu, &img, p_perso);
+                        break;
+
+                         case 3:
+                     img.surface = IMG_Load("perso/tileBack1.png");
+                        display_perso(p_jeu, &img, p_perso);
+                        break;
+
+                         case 4:
+                     img.surface = IMG_Load("perso/tileFront1.png");
+                        display_perso(p_jeu, &img, p_perso);
+                        break;
+
+                        defaut:
+                        break;
+                   } */
+
                    break;
 
 
                 case SDL_KEYDOWN: 
-
+                
                 display_map(p_jeu, xmap, ymap);
                 nbMapLoad++; 
 
@@ -114,7 +141,7 @@ int main(int argc, char **argv) {
                                      p_perso->x -= SPEED;
                                     
                         
-                                    printf("p_perso[%d][%d]\n",  p_perso->x + 12, p_perso->y - 12);
+                                    printf("p_perso[%d][%d]\n",  p_perso->x, p_perso->y);
 
 
                                     if(p_perso->x <= 0 && xmap != 0) {
@@ -138,21 +165,17 @@ int main(int argc, char **argv) {
                                 case SDLK_RIGHT: 
 
                                 keyRight = SDL_TRUE; 
+                                orientation = 2;
 
                                     countCase++; 
 
                                      p_perso->x += SPEED;
 
 
-                                    if(xmap == 0 && ymap == 0 && ((p_perso->x) + SPEED == 48)) {
-                                        if(p_perso->y >= 216 && p_perso->y <= 384) p_perso->x -= SPEED;
-                                    }
-                                    if(xmap == 0 && ymap == 0 && ((p_perso->x) + SPEED == 96)) {
-                                        if(p_perso->y == 144) p_perso->x -= SPEED;
-                                    }
+                                collisions_right(p_perso, xmap, ymap); 
                                     
                                                  
-                                    printf("p_perso[%d][%d]\n",  p_perso->x + 12, p_perso->y - 12);
+                                    printf("p_perso[%d][%d]\n",  p_perso->x, p_perso->y);
 
                                     if(p_perso->x >= (SCREEN_W - p_perso->w)) {
                                         p_perso->x -= SCREEN_W - 60;
@@ -162,6 +185,8 @@ int main(int argc, char **argv) {
                                     }
 
                                     load_anim_right(c, p_jeu, &img, &perso);
+
+                                    
 
                                 break; 
 
@@ -173,15 +198,9 @@ int main(int argc, char **argv) {
 
                                      p_perso->y -= SPEED;
 
-                                    if(xmap == 0 && ymap == 0 && ((p_perso->y) - SPEED) == 384) {
-                                        if(p_perso->x >= 36 && p_perso->x <= 750) p_perso->y += SPEED;
-                                    }
-
-                                     if(xmap == 0 && ymap == 0 && ((p_perso->y) - SPEED == 144)) {
-                                        if(p_perso->x >= 108 && p_perso->x <= 252) p_perso->y += SPEED;
-                                    }
+                                    collisions_up(p_perso, xmap, ymap); 
                                    
-                                    printf("p_perso[%d][%d]\n",   p_perso->x + 12, p_perso->y - 12);
+                                    printf("p_perso[%d][%d]\n",   p_perso->x, p_perso->y);
 
                                     countCase++; 
                                     
@@ -195,6 +214,8 @@ int main(int argc, char **argv) {
                                         p_perso->y += SPEED;
                                     } 
                                     load_anim_back(c, p_jeu, &img, &perso);
+
+                                    orientation = 3;
                                     
                                 break;
                                 //
@@ -207,13 +228,11 @@ int main(int argc, char **argv) {
 
                                     p_perso->y += SPEED;
 
-                                    printf("p_perso[%d][%d]\n",  p_perso->x + 12, p_perso->y - 12);
+                                    printf("p_perso[%d][%d]\n",  p_perso->x, p_perso->y);
 
                                     countCase++; 
 
-                                    if(xmap == 0 && ymap == 0 && ((p_perso->y) + SPEED) == 204) {
-                                        if(p_perso->x >= 156 && p_perso->x <= 252) p_perso->y -= SPEED;
-                                    }
+                                    
                                     
                                     if(p_perso->y >= (SCREEN_H - p_perso->h)) {
                                         p_perso->y -= SCREEN_H - 60;
@@ -222,6 +241,8 @@ int main(int argc, char **argv) {
                                         printf("map numero : %d %d\n", xmap, ymap);
                                     }
                                     load_anim_forward(c, p_jeu, &img, &perso);
+
+                                    orientation = 4;
                                 
                                 break;
 
@@ -237,6 +258,7 @@ int main(int argc, char **argv) {
              
         } // fin while SDL_PollEvent 
         SDL_RenderPresent(jeu.gRenderer);
+        
 
         if(1000/FPS > SDL_GetTicks() - tick_start) {
                 SDL_Delay(1000/FPS - (SDL_GetTicks() - tick_start));
