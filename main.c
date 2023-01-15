@@ -6,19 +6,27 @@
 #include <stdio.h>
 #include <SDL.h>
 #include <SDL_image.h>
+#include <time.h>
 #include "main.h"
 #include "move_player.h"
 #include "map.h"
 #include "init.h"
 #include "collisions.h"
+#include "display_monster.h"
+#include "inventory.h"
+#include "attack.h"
 
 int recup_carte(int x, int y);
 
 Jeu jeu;
 Img img;
+Img monstre;
+Img inventory; 
 
 Img *p_img = &img;
 Jeu *p_jeu = &jeu;
+Img *p_inventory = &inventory; 
+Img *p_img_monstre = &monstre; 
 
 int main(int argc, char **argv) {
     
@@ -26,6 +34,7 @@ int main(int argc, char **argv) {
     SDL_bool program_launched = SDL_TRUE;
     SDL_Rect perso = {24, 120, 64, 64}; // rectangle de destination du perso
     SDL_Rect *p_perso = &perso;
+    SDL_Rect dest_monstre = {100, 100, 84, 84};
 
     int countCase = 0; // compte les appuis sur une touche
     int *c = &countCase;
@@ -33,9 +42,10 @@ int main(int argc, char **argv) {
     int nbMapLoad = 1; 
     int tick, tick_start = 0; 
 
-     int xmap = 0;
-     int ymap = 0;
-     int next_element_carte = 0; 
+    int xmap = 0;
+    int ymap = 0;
+    int chest = 0;
+    int next_element_carte = 0; // a voir
 
      ///// les touches du clavier /////
 
@@ -43,8 +53,6 @@ int main(int argc, char **argv) {
     SDL_bool keyRight = SDL_FALSE;
     SDL_bool keyForward = SDL_FALSE;
     SDL_bool keyUp = SDL_FALSE;
-
-    ///////////////////////////////////
 
     ///////////////////////////////////////////// INIT //////////////////////////////////////////////////
 
@@ -70,12 +78,11 @@ int main(int argc, char **argv) {
         // affiche le sprite du personnage
         p_img->surface = IMG_Load("perso/tileFront1.png");  // creation de la surface a partir de l'image
         
-        display_map(p_jeu, xmap, ymap);    
+        display_map(p_jeu, xmap, ymap, chest);    
         display_perso(p_jeu, &img, &perso);
 
 
     while(program_launched) {
-
 
         tick_start = SDL_GetTicks();
         SDL_Event event;   
@@ -86,179 +93,161 @@ int main(int argc, char **argv) {
 
                 case SDL_QUIT: 
                     program_launched = SDL_FALSE; 
-                break;
-
+                    break;
 
                 case SDL_KEYUP:
-
-                if(keyLeft == SDL_TRUE) keyLeft = SDL_FALSE;
-                 if(keyRight == SDL_TRUE) keyRight = SDL_FALSE;
-                  if(keyForward == SDL_TRUE) keyForward = SDL_FALSE;
-                   if(keyUp == SDL_TRUE) keyUp = SDL_FALSE; 
-
-                 /*  switch(orientation) {
-
-                    case 1:
-                     img.surface = IMG_Load("perso/tileLeft1.png");
-                        display_perso(p_jeu, &img, p_perso);
-                        break;
-
-                         case 2:
-                     img.surface = IMG_Load("perso/tileRight1.png");
-                        display_perso(p_jeu, &img, p_perso);
-                        break;
-
-                         case 3:
-                     img.surface = IMG_Load("perso/tileBack1.png");
-                        display_perso(p_jeu, &img, p_perso);
-                        break;
-
-                         case 4:
-                     img.surface = IMG_Load("perso/tileFront1.png");
-                        display_perso(p_jeu, &img, p_perso);
-                        break;
-
-                        defaut:
-                        break;
-                   } */
-
-                   break;
-
+                    if(keyLeft == SDL_TRUE) keyLeft = SDL_FALSE;
+                    if(keyRight == SDL_TRUE) keyRight = SDL_FALSE;
+                    if(keyForward == SDL_TRUE) keyForward = SDL_FALSE;
+                    if(keyUp == SDL_TRUE) keyUp = SDL_FALSE; 
+                    break;
 
                 case SDL_KEYDOWN: 
-                
-                display_map(p_jeu, xmap, ymap);
-                nbMapLoad++; 
+                    //SDL_RenderClear(jeu.gRenderer); a voir si on ajoute
+                    display_map(p_jeu, xmap, ymap, chest);
+                    //move_monster(&dest_monstre, p_jeu, p_perso, p_img_monstre);
+                    nbMapLoad++; 
 
                     switch(event.key.keysym.sym) { 
 
-                                case SDLK_LEFT: 
+                        case SDLK_LEFT: 
+                            keyLeft = SDL_TRUE; 
+                            countCase++;
+                            p_perso->x -= SPEED;
 
-                                keyLeft = SDL_TRUE; 
+                            collisions_left(p_perso, xmap, ymap); 
+                            printf("p_perso[%d][%d]\n",  p_perso->x, p_perso->y);
 
-                                    countCase++;
-                               
-                                     p_perso->x -= SPEED;
-                                    
-                        
-                                    printf("p_perso[%d][%d]\n",  p_perso->x, p_perso->y);
-
-
-                                    if(p_perso->x <= 0 && xmap != 0) {
-                                    p_perso->x += SCREEN_W - 60;
-                                    xmap--; 
-                                    nbMapLoad++; 
-                                    printf("map numero : %d %d\n", xmap, ymap);
-                                    }
-                                     else if(p_perso->x <= 0 && xmap == 0) {
-                                        p_perso->x += SPEED;
-                                    }
-                                    
-                                    load_anim_left(c, p_jeu, &img, &perso);
-
-                                    orientation = 1; 
-                                    
-                                break;
+                            if(p_perso->x <= 0 && xmap != 0) {
+                                p_perso->x += SCREEN_W - 60;
+                                xmap--; 
+                                nbMapLoad++; 
+                                printf("map numero : %d %d\n", xmap, ymap);
+                                display_map(p_jeu, xmap, ymap, chest);
+                            } else if(p_perso->x <= 0 && xmap == 0) {
+                                p_perso->x += SPEED;
+                            }
+                            
+                            load_anim_left(c, p_jeu, &img, &perso);
+                            orientation = 1; 
+                            break;
                                                 
-                        /////////////////////////////////////////////////////////////////////////////////////////////////
+                        case SDLK_RIGHT: 
+                            keyRight = SDL_TRUE; 
+                            orientation = 2;
+                            countCase++; 
+                            p_perso->x += SPEED;
 
-                                case SDLK_RIGHT: 
+                            collisions_right(p_perso, xmap, ymap);                 
+                            printf("p_perso[%d][%d]\n",  p_perso->x, p_perso->y);
 
-                                keyRight = SDL_TRUE; 
-                                orientation = 2;
+                            if(p_perso->x >= (SCREEN_W - p_perso->w)) {
+                                p_perso->x -= SCREEN_W - 60;
+                                xmap++; 
+                                nbMapLoad++; 
+                                printf("map numero : %d %d\n", xmap, ymap);
+                                display_map(p_jeu, xmap, ymap, chest);
+                            }
+                            
+                            orientation = 2;
+                            load_anim_right(c, p_jeu, &img, &perso);
+                            break; 
 
-                                    countCase++; 
 
-                                     p_perso->x += SPEED;
+                        case SDLK_UP: 
+                            keyUp = SDL_TRUE; 
+                            p_perso->y -= SPEED;
 
+                            collisions_front(p_perso, xmap, ymap); 
+                            printf("p_perso[%d][%d]\n",   p_perso->x, p_perso->y);
 
-                                collisions_right(p_perso, xmap, ymap); 
-                                    
-                                                 
-                                    printf("p_perso[%d][%d]\n",  p_perso->x, p_perso->y);
+                            countCase++;   
+                            if(p_perso->y <= 0 && ymap != 0) {
+                                p_perso->y += SCREEN_H - 60;
+                                ymap--;
+                                if(ymap <= 0) ymap = 0; 
+                                nbMapLoad++; 
+                                printf("map numero : %d %d\n", xmap, ymap);
+                                display_map(p_jeu, xmap, ymap, chest);
+                            } else if(p_perso->y <= 0 && ymap == 0) {
+                                p_perso->y += SPEED;
+                            } 
 
-                                    if(p_perso->x >= (SCREEN_W - p_perso->w)) {
-                                        p_perso->x -= SCREEN_W - 60;
-                                        xmap++; 
-                                        nbMapLoad++; 
-                                        printf("map numero : %d %d\n", xmap, ymap);
-                                    }
+                            orientation = 3;
+                            load_anim_back(c, p_jeu, &img, &perso);                                    
+                            break;
 
-                                    load_anim_right(c, p_jeu, &img, &perso);
+                        case SDLK_DOWN:
+                            keyForward = SDL_TRUE;
+                            p_perso->y += SPEED;
 
-                                    
+                            collisions_down(p_perso, xmap, ymap); 
+                            printf("p_perso[%d][%d]\n",  p_perso->x, p_perso->y);
 
-                                break; 
+                            countCase++; 
+                            if(p_perso->y >= (SCREEN_H - p_perso->h)) {
+                                p_perso->y -= SCREEN_H - 60;
+                                ymap++;
+                                nbMapLoad++; 
+                                printf("map numero : %d %d\n", xmap, ymap);
+                                display_map(p_jeu, xmap, ymap, chest);
+                            }
 
-                        /////////////////////////////////////////////////////////////////////////////////////////////////
+                            orientation = 4;
+                            load_anim_forward(c, p_jeu, &img, &perso);
+                            break;
 
-                                case SDLK_UP: 
+                        case SDLK_f: // open chest
+                            if(p_perso->y == 96 && p_perso->x >= 576 && p_perso->x <= 600)
+                                chest = 1;
+                                display_map(p_jeu, xmap, ymap, chest);
+                                load_anim_back(c, p_jeu, &img, &perso);
+                            break;
+                        
+                        case SDLK_i: // open inventory
+                            open_inventory(p_inventory, p_jeu); 
+                            break;
 
-                                keyUp = SDL_TRUE; 
+                        case SDLK_e: 
+                            attack(p_jeu, orientation, p_img, p_perso, xmap, ymap, chest);
+                            display_map(p_jeu, xmap, ymap, chest);
+                            
+                            switch(orientation) {
 
-                                     p_perso->y -= SPEED;
+                                case 1:
+                                    img.surface = IMG_Load("perso/link/linkBasic/linkLeft1.png");
+                                    display_perso(p_jeu, p_img, p_perso);
+                                    break;
 
-                                    collisions_up(p_perso, xmap, ymap); 
-                                   
-                                    printf("p_perso[%d][%d]\n",   p_perso->x, p_perso->y);
+                                case 2:
+                                    img.surface = IMG_Load("perso/link/linkBasic/linkRight1.png");
+                                    display_perso(p_jeu, p_img, p_perso);
+                                    break;
 
-                                    countCase++; 
-                                    
-                                    if(p_perso->y <= 0 && ymap != 0) {
-                                        p_perso->y += SCREEN_H - 60;
-                                        ymap--;
-                                        if(ymap <= 0) ymap = 0; 
-                                        nbMapLoad++; 
-                                        printf("map numero : %d %d\n", xmap, ymap);
-                                    } else if(p_perso->y <= 0 && ymap == 0) {
-                                        p_perso->y += SPEED;
-                                    } 
-                                    load_anim_back(c, p_jeu, &img, &perso);
+                                case 3:
+                                    img.surface = IMG_Load("perso/link/linkBasic/linkUp1.png");
+                                    display_perso(p_jeu, p_img, p_perso);
+                                    break;
 
-                                    orientation = 3;
-                                    
+                                case 4:
+                                    img.surface = IMG_Load("perso/link/linkBasic/linkForward1.png");
+                                    display_perso(p_jeu, p_img, p_perso);
+                                    break;
+
+                                default:
                                 break;
-                                //
-
-                        /////////////////////////////////////////////////////////////////////////////////////////////////
-
-                                case SDLK_DOWN:
-
-                                keyForward = SDL_TRUE;
-
-                                    p_perso->y += SPEED;
-
-                                    printf("p_perso[%d][%d]\n",  p_perso->x, p_perso->y);
-
-                                    countCase++; 
-
-                                    
-                                    
-                                    if(p_perso->y >= (SCREEN_H - p_perso->h)) {
-                                        p_perso->y -= SCREEN_H - 60;
-                                        ymap++;
-                                        nbMapLoad++; 
-                                        printf("map numero : %d %d\n", xmap, ymap);
-                                    }
-                                    load_anim_forward(c, p_jeu, &img, &perso);
-
-                                    orientation = 4;
-                                
-                                break;
-
+                            }
+                        break;
 
                         default:
                         break;
                     } // fin switch event.key
-
                 default:
                 break;
-
-            } // fin swtich event.type 
-             
+            } // fin swtich event.type  
         } // fin while SDL_PollEvent 
+
         SDL_RenderPresent(jeu.gRenderer);
-        
 
         if(1000/FPS > SDL_GetTicks() - tick_start) {
                 SDL_Delay(1000/FPS - (SDL_GetTicks() - tick_start));

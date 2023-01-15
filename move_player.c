@@ -24,37 +24,25 @@ SDL_Rect display_perso(Jeu *p_jeu, Img *p_img, SDL_Rect *p_perso) {     // retou
     }    
 
         SDL_RenderCopy(p_jeu->gRenderer, p_img->texture, NULL, p_perso); 
-        SDL_RenderPresent(p_jeu->gRenderer);
+        SDL_DestroyTexture(p_img->texture);
 
     return *p_perso;  
 }
 
 int load_anim_left(int *c, Jeu *p_jeu, Img *img, SDL_Rect *p_perso) {
 
-       
-    if(*c == 1) {
-        img->surface = IMG_Load("perso/tileLeft1.png");
+    if(*c == 1) { 
+        img->surface = IMG_Load("perso/link/linkBasic/linkLeft1.png");
         display_perso(p_jeu, img, p_perso);
     }
 
-    if(*c == 2) {
-        img->surface = IMG_Load("perso/tileLeft2.png");
+    if(*c == 2) { 
+        img->surface = IMG_Load("perso/link/linkBasic/linkLeft2.png");
         display_perso(p_jeu, img, p_perso);
     }
 
-    ////////////deuxieme partie de l'animation vers la gauche/////////////////////
 
-    if(*c == 3) {
-        img->surface = IMG_Load("perso/tileLeft3.png");
-        display_perso(p_jeu, img, p_perso);
-    }
-
-    if(*c == 4){
-        img->surface = IMG_Load("perso/tileLeft4.png");
-        display_perso(p_jeu, img, p_perso);
-    }
-    
-    if(*c >= 4) {
+    if(*c >= 2) {
         *c = 0;
     }
     
@@ -64,28 +52,18 @@ int load_anim_left(int *c, Jeu *p_jeu, Img *img, SDL_Rect *p_perso) {
 int load_anim_right(int *c, Jeu *p_jeu, Img *img, SDL_Rect *p_perso) {
 
     if(*c == 1) { 
-        img->surface = IMG_Load("perso/tileRight1.png");
+        img->surface = IMG_Load("perso/link/linkBasic/linkRight1.png");
         display_perso(p_jeu, img, p_perso);
+        
     }
 
     if(*c == 2) { 
-        img->surface = IMG_Load("perso/tileRight2.png");
+        img->surface = IMG_Load("perso/link/linkBasic/linkRight2.png");
         display_perso(p_jeu, img, p_perso);
     }
 
-    ////////////deuxieme partie de l'animation vers la gauche/////////////////////
 
-    if(*c == 3) {
-        img->surface = IMG_Load("perso/tileRight3.png");
-        display_perso(p_jeu, img, p_perso);
-    }
-
-    if(*c == 4) { 
-        img->surface = IMG_Load("perso/tileRight4.png");
-        display_perso(p_jeu, img, p_perso);
-    }
-
-    if(*c >= 4) {
+    if(*c >= 2) {
         *c = 0;
     }
 
@@ -95,28 +73,17 @@ int load_anim_right(int *c, Jeu *p_jeu, Img *img, SDL_Rect *p_perso) {
 int load_anim_back(int *c, Jeu *p_jeu, Img *img, SDL_Rect *p_perso) {
 
     if(*c == 1) { 
-        img->surface = IMG_Load("perso/tileBack1.png");
+        img->surface = IMG_Load("perso/link/linkBasic/linkUp1.png");
         display_perso(p_jeu, img, p_perso);
     }
 
     if(*c == 2) { 
-        img->surface = IMG_Load("perso/tileBack2.png");
+        img->surface = IMG_Load("perso/link/linkBasic/linkUp2.png");
         display_perso(p_jeu, img, p_perso);
     }
 
-    ////////////deuxieme partie de l'animation vers la gauche/////////////////////
 
-    if(*c == 3) {
-        img->surface = IMG_Load("perso/tileBack3.png");
-        display_perso(p_jeu, img, p_perso);
-    }
-
-    if(*c == 4) { 
-        img->surface = IMG_Load("perso/tileBack4.png");
-        display_perso(p_jeu, img, p_perso);
-    }
-
-    if(*c >= 4) {
+    if(*c >= 2) {
         *c = 0;
     }
     
@@ -126,28 +93,17 @@ int load_anim_back(int *c, Jeu *p_jeu, Img *img, SDL_Rect *p_perso) {
 int load_anim_forward(int *c, Jeu *p_jeu, Img *img, SDL_Rect *p_perso) {
 
     if(*c == 1) { 
-        img->surface = IMG_Load("perso/tileFront1.png");
+        img->surface = IMG_Load("perso/link/linkBasic/linkForward1.png");
         display_perso(p_jeu, img, p_perso);
     }
 
     if(*c == 2) { 
-        img->surface = IMG_Load("perso/tileFront2.png");
+        img->surface = IMG_Load("perso/link/linkBasic/linkForward2.png");
         display_perso(p_jeu, img, p_perso);
     }
 
-    ////////////deuxieme partie de l'animation vers la gauche/////////////////////
 
-    if(*c == 3) {
-        img->surface = IMG_Load("perso/tileFront3.png");
-        display_perso(p_jeu, img, p_perso);
-    }
-
-    if(*c == 4) { 
-        img->surface = IMG_Load("perso/tileFront4.png");
-        display_perso(p_jeu, img, p_perso);
-    }
-
-    if(*c >= 4) {
+    if(*c >= 2) {
         *c = 0;
     }
 
