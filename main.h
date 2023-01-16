@@ -6,6 +6,4 @@
 #include "defines.h"
 #include "move_player.h"
 
-
-
 #endif 

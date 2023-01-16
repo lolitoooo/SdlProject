@@ -16,8 +16,6 @@ void display_map(Jeu *p_jeu,  int xmap,  int ymap, int chest) {
     Img map3; 
     Img map4;
 
-    ////////////// textures d'herbe ///////////////////
-
     if(xmap == 0 && ymap == 0 && chest == 0) {
 
     map1.surface = IMG_Load("map/map00.png");
@@ -66,5 +64,4 @@ void display_map(Jeu *p_jeu,  int xmap,  int ymap, int chest) {
     SDL_RenderCopy(p_jeu->gRenderer, map3.texture, NULL, &rect_map);
 
     }
-
 }

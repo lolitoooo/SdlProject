@@ -13,7 +13,7 @@ void open_inventory(Img *p_inventory, Jeu *p_jeu) {
 
     init_inventory(); 
 
-    p_inventory->surface = IMG_Load("inventaire.png");
+    p_inventory->surface = IMG_Load("inventory/inventaire.png");
 
     if(p_inventory->surface == NULL) {
         printf("erreur de creation de la surface pour l'inventaire : %s\n", SDL_GetError());
@@ -27,19 +27,13 @@ void open_inventory(Img *p_inventory, Jeu *p_jeu) {
         exit(1); 
     }
     SDL_RenderCopy(p_jeu->gRenderer, p_inventory->texture, NULL, &i_rect);
-
 }
-
 
 void init_inventory() {
-
-        int inventory[3][3] = {0}; 
-
+    int inventory[3][3] = {0}; 
 }
 
-
 void close_inventory(Img *p_inventory, Jeu *p_jeu) {
-
     SDL_DestroyTexture(p_inventory->texture); 
     SDL_RenderPresent(p_jeu->gRenderer); 
 }

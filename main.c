@@ -32,11 +32,11 @@ int main(int argc, char **argv) {
     
 
     SDL_bool program_launched = SDL_TRUE;
-    SDL_Rect perso = {24, 120, 64, 64}; // rectangle de destination du perso
+    SDL_Rect perso = {24, 120, 64, 64}; 
     SDL_Rect *p_perso = &perso;
     SDL_Rect dest_monstre = {100, 100, 84, 84};
 
-    int countCase = 0; // compte les appuis sur une touche
+    int countCase = 0; 
     int *c = &countCase;
     int orientation = 0;
     int nbMapLoad = 1; 
@@ -45,16 +45,12 @@ int main(int argc, char **argv) {
     int xmap = 0;
     int ymap = 0;
     int chest = 0;
-    int next_element_carte = 0; // a voir
-
-     ///// les touches du clavier /////
+    int next_element_carte = 0; 
 
     SDL_bool keyLeft = SDL_FALSE; 
     SDL_bool keyRight = SDL_FALSE;
     SDL_bool keyForward = SDL_FALSE;
     SDL_bool keyUp = SDL_FALSE;
-
-    ///////////////////////////////////////////// INIT //////////////////////////////////////////////////
 
     if(SDL_Init(SDL_INIT_VIDEO) < 0) {
         printf("erreur d'initialisation de la SDL : %s\n", SDL_GetError());
@@ -71,16 +67,12 @@ int main(int argc, char **argv) {
     if(jeu.gRenderer == NULL) {
         printf("erreur de creation du rendu : %s\n", SDL_GetError());
         exit(1);
-     }   
-
-    ///////////////////////////////////////////////////////////////////////////////////////////////////
+    }   
  
-        // affiche le sprite du personnage
-        p_img->surface = IMG_Load("perso/tileFront1.png");  // creation de la surface a partir de l'image
+    p_img->surface = IMG_Load("perso/link/linkBasic/linkForward1.png"); 
         
-        display_map(p_jeu, xmap, ymap, chest);    
-        display_perso(p_jeu, &img, &perso);
-
+    display_map(p_jeu, xmap, ymap, chest);    
+    display_perso(p_jeu, &img, &perso);
 
     while(program_launched) {
 
@@ -103,7 +95,7 @@ int main(int argc, char **argv) {
                     break;
 
                 case SDL_KEYDOWN: 
-                    //SDL_RenderClear(jeu.gRenderer); a voir si on ajoute
+                    //SDL_RenderClear(jeu.gRenderer);
                     display_map(p_jeu, xmap, ymap, chest);
                     //move_monster(&dest_monstre, p_jeu, p_perso, p_img_monstre);
                     nbMapLoad++; 
@@ -197,14 +189,14 @@ int main(int argc, char **argv) {
                             load_anim_forward(c, p_jeu, &img, &perso);
                             break;
 
-                        case SDLK_f: // open chest
+                        case SDLK_f:
                             if(p_perso->y == 96 && p_perso->x >= 576 && p_perso->x <= 600)
                                 chest = 1;
                                 display_map(p_jeu, xmap, ymap, chest);
                                 load_anim_back(c, p_jeu, &img, &perso);
                             break;
                         
-                        case SDLK_i: // open inventory
+                        case SDLK_i:
                             open_inventory(p_inventory, p_jeu); 
                             break;
 

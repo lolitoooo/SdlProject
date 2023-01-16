@@ -8,27 +8,22 @@
 
 void attack(Jeu *p_jeu, int orientation, Img *p_img, SDL_Rect *p_perso, int xmap, int ymap, int chest) {
 
+    switch(orientation) {
 
-        switch(orientation) {
-
-
-            ///////////// GAUCHE ////////////////////
-
-            case 1:  // gauche
-             p_img->surface = IMG_Load("perso/link/swordL1.png");
-             p_perso->w  -= 18;
-             p_perso->x  += 5;
-             p_perso->y  -= 12;
-             SDL_RenderClear(p_jeu->gRenderer);
-             display_map(p_jeu, xmap, ymap, chest);
-             p_perso->w = 36;
-             p_perso->h = 48;
+        case 1:  // gauche
+            p_img->surface = IMG_Load("perso/link/swordL1.png");
+            p_perso->w  -= 18;
+            p_perso->x  += 5;
+            p_perso->y  -= 12;
+            SDL_RenderClear(p_jeu->gRenderer);
+            display_map(p_jeu, xmap, ymap, chest);
+            p_perso->w = 36;
+            p_perso->h = 48;
             display_perso(p_jeu, p_img, p_perso);
             SDL_RenderPresent(p_jeu->gRenderer); 
             SDL_Delay(30);
             p_perso->w  += 18;
-            
-
+        
             p_img->surface = IMG_Load("perso/link/swordL2.png");
             p_perso->x  -= 24;
             SDL_RenderClear(p_jeu->gRenderer);
@@ -55,20 +50,17 @@ void attack(Jeu *p_jeu, int orientation, Img *p_img, SDL_Rect *p_perso, int xmap
             p_perso->x += 25;
 
             p_perso->w = 36;
-            p_perso->h = 36;
-                        
+            p_perso->h = 36;      
             break;
 
-            ///////////// DROITE ////////////////////
-
-            case 2: // droite
+        case 2: // Droite
             p_img->surface = IMG_Load("perso/link/swordR1.png");
-             p_perso->w  -= 18;
-             p_perso->y  -= 12;
-             SDL_RenderClear(p_jeu->gRenderer);
-             display_map(p_jeu, xmap, ymap, chest);
-              p_perso->w = 36;
-             p_perso->h = 48;
+            p_perso->w  -= 18;
+            p_perso->y  -= 12;
+            SDL_RenderClear(p_jeu->gRenderer);
+            display_map(p_jeu, xmap, ymap, chest);
+            p_perso->w = 36;
+            p_perso->h = 48;
             display_perso(p_jeu, p_img, p_perso);
             SDL_RenderPresent(p_jeu->gRenderer); 
             SDL_Delay(30);
@@ -99,19 +91,15 @@ void attack(Jeu *p_jeu, int orientation, Img *p_img, SDL_Rect *p_perso, int xmap
             p_perso->y  -= 2;
             p_perso->w = 36;
             p_perso->h = 36;
-
             break;
 
-            ///////////// HAUT ////////////////////
-
-            case 3: // haut
-            
-             p_perso->x += 8;
+        case 3: // Haut
+            p_perso->x += 8;
             p_img->surface = IMG_Load("perso/link/swordU1.png");
-             SDL_RenderClear(p_jeu->gRenderer);
-             display_map(p_jeu, xmap, ymap, chest);
-             p_perso->w = 62;
-             p_perso->h = 40;
+            SDL_RenderClear(p_jeu->gRenderer);
+            display_map(p_jeu, xmap, ymap, chest);
+            p_perso->w = 62;
+            p_perso->h = 40;
             display_perso(p_jeu, p_img, p_perso);
             SDL_RenderPresent(p_jeu->gRenderer); 
             SDL_Delay(30);
@@ -138,32 +126,26 @@ void attack(Jeu *p_jeu, int orientation, Img *p_img, SDL_Rect *p_perso, int xmap
             SDL_Delay(30); 
 
             p_perso->y += 20;
-             p_perso->w = 36;
-             p_perso->h = 36;
-
+            p_perso->w = 36;
+            p_perso->h = 36;
             break;
 
-            ///////////// BAS ////////////////////
-
-            case 4: // bas
-
+        case 4: // Bas
             p_img->surface = IMG_Load("perso/link/swordF1.png");
-             SDL_RenderClear(p_jeu->gRenderer);
-             display_map(p_jeu, xmap, ymap, chest);
-             p_perso->w = 64;
-             p_perso->h = 40;
-             p_perso->x -= 28;
+            SDL_RenderClear(p_jeu->gRenderer);
+            display_map(p_jeu, xmap, ymap, chest);
+            p_perso->w = 64;
+            p_perso->h = 40;
+            p_perso->x -= 28;
             display_perso(p_jeu, p_img, p_perso);
             SDL_RenderPresent(p_jeu->gRenderer); 
             SDL_Delay(30);
             
-            
-
             p_img->surface = IMG_Load("perso/link/swordF2.png");
             p_perso->w = 72;
             p_perso->h = 64;
             p_perso->y += 4;
-             p_perso->x -= 4;
+            p_perso->x -= 4;
             SDL_RenderClear(p_jeu->gRenderer);
             display_map(p_jeu, xmap, ymap, chest);
             display_perso(p_jeu, p_img, p_perso);
@@ -181,15 +163,12 @@ void attack(Jeu *p_jeu, int orientation, Img *p_img, SDL_Rect *p_perso, int xmap
             SDL_RenderPresent(p_jeu->gRenderer);
             SDL_Delay(30); 
 
-             p_perso->w = 36;
-             p_perso->h = 36;
-            p_perso->y -= 6;
-             
+            p_perso->w = 36;
+            p_perso->h = 36;
+            p_perso->y -= 6;  
             break;
-
 
             default:
             break;
-        }
-
+    }
 }

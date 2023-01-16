@@ -7,5 +7,4 @@
 #define SPEED_MONSTER 36
 #define FPS 60
 
-
 #endif
