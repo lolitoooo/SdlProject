@@ -4,10 +4,10 @@
 
 int main(int argc, char **argv){
 
-static char *host = "localhost";
-static char *user = "root";
-static char *pass = "Respons11";
-static char *dbname = "TEST";
+static char *host   = "XXXX";
+static char *user   = "XXXX";
+static char *pass   = "XXXX";
+static char *dbname = "XXXX";
 
 unsigned int port = 3306;
 static char *unix_socket = NULL;
